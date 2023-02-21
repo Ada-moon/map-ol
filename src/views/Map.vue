@@ -26,6 +26,8 @@ export default {
       this.addLine()
       // this.addMultiLine()
       this.addCircle()
+
+      this.myMap.addEventListener('click', this.pointClick)
     });
   },
   data () {
@@ -82,8 +84,9 @@ export default {
         new Style({
           image: new Icon({
             src: require('@/assets/img/map/icon3.png'),
-            width: 40,
-            height: 40
+            // width: 10,
+            // height: 10,
+            scale: 0.25
           }),
           // image: new CircleStyle({
           //   fill: fill,
@@ -113,7 +116,6 @@ export default {
       // 把源添加到地图
       this.myMap.addLayer(vector);
     },
-
     addLine () {
       // map.addLayer(Vector) ：将矢量层添加到map
       // Vector设置source属性：将源添加到矢量层
@@ -151,7 +153,6 @@ export default {
       })
       this.myMap.addLayer(vector)
     },
-
     addMultiLine () {
       // map.addLayer(Vector) ：将矢量层添加到map
       // Vector设置source属性：将源添加到矢量层
@@ -191,7 +192,6 @@ export default {
       })
       this.myMap.addLayer(vector)
     },
-
     addMultiPoint () {
       // 创建几何（点）
       let point = new MultiPoint([fromLonLat([116.39, 39.94]), fromLonLat([116.4, 39.9])]);
@@ -224,7 +224,6 @@ export default {
       // 把源添加到地图
       this.myMap.addLayer(vector);
     },
-
     addCircle () {
       let circle = new Circle(fromLonLat([116.3, 39.9]), 1000)
       let features = new Feature({
@@ -249,19 +248,28 @@ export default {
       })
       this.myMap.addLayer(vector)
     },
-    // 打标记
-    
+    // 点击落点,打个标记,高亮当前点
+    pointClick (ev) {
+      // 获取像素
+      let pixel = ev.pixel;
+      // 获取坐标
+      let coordinate = ev.coordinate;
+      let feature = this.myMap.forEachFeatureAtPixel(pixel, function (feature) {
+        return feature;
+      });
+      console.log(coordinate, feature)
+    },
   },
 };
 </script>
 <style>
 .main,
 #map {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .ol-attributiona {
-    color: black;
+  color: black;
 }
 </style>
